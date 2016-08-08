@@ -35,7 +35,7 @@ local function labelChanged(value)
 	label=value
 	system.pSave("label",value)
 	system.unregisterTelemetry(1)
-	system.registerTelemetry(1,label,0,printTelemetry)
+	system.registerTelemetry(1,label,2,printTelemetry)
 end
 
 local function sensorChanged(value)
@@ -170,7 +170,7 @@ local function init()
 	asce = system.pLoad("asce",0)
 	telemVal = "-"
 	system.registerForm(1, MENU_APPS, appName, initForm)
-	system.registerTelemetry(1,label,0,printTelemetry)
+	system.registerTelemetry(1,label,2,printTelemetry)
 	system.registerControl (1, "PercentageCtrl", "C01")
 	system.setControl(1, 0 ,1000,1)
 end
