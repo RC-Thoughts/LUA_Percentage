@@ -15,13 +15,13 @@
 --]]
 
 local appName = "Percentage Display"
-
+--------------------------------------------------------------------------------
 local label, sens, sensid, senspa, mini, maxi 
 local id, param, telem, telemVal, alarm, asce
 local sensorLalist = {"..."}
 local sensorIdlist = {"..."}
 local sensorPalist = {"..."}
-
+--------------------------------------------------------------------------------
 local sensors = system.getSensors()
 	for i,sensor in ipairs(sensors) do
 		if (sensor.label ~= "") then
@@ -34,8 +34,6 @@ local sensors = system.getSensors()
 local function labelChanged(value)
 	label=value
 	system.pSave("label",value)
-	system.unregisterTelemetry(1)
-	system.registerTelemetry(1,label,2,printTelemetry)
 end
 
 local function sensorChanged(value)
@@ -46,35 +44,27 @@ local function sensorChanged(value)
 	system.pSave("sens",value)
 	system.pSave("sensid",value)
 	system.pSave("senspa",value)
-	print ("New settings:")
-	print (sens, sensorLalist[value])
-	print (sensid, sensorIdlist[value])
-	print (senspa, sensorPalist[value])
 end
 
 local function miniChanged(value)
 	mini=value
 	system.pSave("mini",value)
-	print ("Mini: ", mini)
 end
 
 local function maxiChanged(value)
 	maxi=value
 	system.pSave("maxi",value)	
-	print ("Maxi: ", maxi)
 end
 
 local function alarmChanged(value)
 	alarm=value
 	system.pSave("alarm",value)
-	print ("Alarmpoint: ", alarm)
 	system.setControl(1, 0 ,1000,1)
 end
 
 local function asceChanged(value)
 	asce=value
 	system.pSave("asce",value)
-	print ("Ascending: ", asce)
 	system.setControl(1, 0 ,1000,1)
 end
 --------------------------------------------------------------------------------
@@ -115,7 +105,6 @@ local function printTelemetry()
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MAXI,string.format("%s%%", telemVal)),10,string.format("%s%%", telemVal),FONT_MAXI)
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),55,"RC-Thoughts.com",FONT_MINI)
 	end
-	--print("Screen refreshed with: ", telemVal)
 end
 --------------------------------------------------------------------------------
 local function loop()
