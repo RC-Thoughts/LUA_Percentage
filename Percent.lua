@@ -40,7 +40,6 @@ local function sensorChanged(value)
 	sens=value
 	sensid=value
 	senspa=value
-	sensva=value
 	system.pSave("sens",value)
 	system.pSave("sensid",value)
 	system.pSave("senspa",value)
