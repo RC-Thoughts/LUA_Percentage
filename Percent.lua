@@ -76,8 +76,8 @@ end
 --------------------------------------------------------------------------------
 local function initForm()
 	form.addRow(2)
-	form.addLabel({label="Telemetry window label"})
-	form.addTextbox(label,20,labelChanged)
+	form.addLabel({label="Telemetry window label",width=175})
+	form.addTextbox(label,14,labelChanged)
 	
 	form.addRow(1)
 	form.addLabel({label="Sensor",font=FONT_BOLD})
@@ -201,4 +201,4 @@ local function init()
 	system.registerControl (1, "PercentageCtrl", "C01")
 end
 --------------------------------------------------------------------------------
-return {init=init, loop=loop, author="RC-Thoughts", version="1.1", name=appName}
+return {init=init, loop=loop, author="RC-Thoughts", version="1.2", name=appName}
