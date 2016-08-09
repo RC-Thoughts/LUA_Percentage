@@ -16,11 +16,13 @@
 
 local appName = "Percentage Display"
 --------------------------------------------------------------------------------
-local label, sens, sensid, senspa, mini, maxi 
-local id, param, telem, telemVal, alarm, asce
+local label, sens, sensid, senspa, mini, maxi, id, param 
+local telem, telemVal, alarm, asce, limit, enalm
 local sensorLalist = {"..."}
 local sensorIdlist = {"..."}
 local sensorPalist = {"..."}
+local enalarmlist = {"No", "Yes"}
+local ascelist = {"No", "Yes"}
 --------------------------------------------------------------------------------
 local sensors = system.getSensors()
 	for i,sensor in ipairs(sensors) do
@@ -66,11 +68,19 @@ local function asceChanged(value)
 	system.pSave("asce",value)
 	system.setControl(1, 0 ,1000,1)
 end
+
+local function enalmChanged(value)
+	enalm=value
+	system.pSave("enalm",value)
+end
 --------------------------------------------------------------------------------
 local function initForm()
 	form.addRow(2)
-	form.addLabel({label="Window label"})
+	form.addLabel({label="Telemetry window label"})
 	form.addTextbox(label,20,labelChanged)
+	
+	form.addRow(1)
+	form.addLabel({label="Sensor",font=FONT_BOLD})
 	
 	form.addRow(2)
 	form.addLabel({label="Select sensor"})
@@ -83,14 +93,21 @@ local function initForm()
 	form.addRow(2)
 	form.addLabel({label="Sensor high value"})
 	form.addIntbox(maxi,0,32767,0,0,1,maxiChanged)
+
+	form.addRow(1)
+	form.addLabel({label="Alarm",font=FONT_BOLD})
+	
+	form.addRow(2)
+	form.addLabel({label="Enable alarm"})
+	form.addSelectbox(enalarmlist,enalm,false,enalmChanged)
+	
+	form.addRow(2)
+	form.addLabel({label="Low alarm"})
+	form.addSelectbox(ascelist,asce,false,asceChanged)
 	
 	form.addRow(2)
 	form.addLabel({label="Alarm point value"})
 	form.addIntbox(alarm,0,32767,0,0,1,alarmChanged)
-	
-	form.addRow(2)
-	form.addLabel({label="Low alarm (0/1)"})
-	form.addIntbox(asce,0,1,0,0,1,asceChanged)
 
 	form.addRow(1)
 	form.addLabel({label="Powered by RC-Thoughts.com",font=FONT_MINI, alignRight=true})
@@ -99,20 +116,23 @@ end
 local function printTelemetry()
 	if (telemVal == "-") then
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MAXI,"-"),10,"-",FONT_MAXI)
-		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),55,"RC-Thoughts.com",FONT_MINI)
+		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),54,"RC-Thoughts.com",FONT_MINI)
+		lcd.drawImage(1,51, ":graph")
 	else
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MAXI,string.format("%s%%", telemVal)),10,string.format("%s%%", telemVal),FONT_MAXI)
-		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),55,"RC-Thoughts.com",FONT_MINI)
+		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),54,"RC-Thoughts.com",FONT_MINI)
+		lcd.drawImage(1,51, ":graph")
 	end
 end
 --------------------------------------------------------------------------------
 local function loop()
 	local id = string.format("%s", sensorIdlist[sensid])
 	local param = string.format("%s", sensorPalist[senspa])
-	telemVal = "0"
 	local result = "0"
 	local tvalue = "0"
+	local limit = "0"
 	local alarm = string.format("%.2f", alarm)
+	telemVal = "0"
 	
 	local sensors = system.getSensors()
 	for i,sensor in ipairs(sensors) do
@@ -121,23 +141,41 @@ local function loop()
 				tvalue = string.format("%s", sensor.value)
 				if (mini < maxi) then
 					local result = (((tvalue - mini) * 100) / (maxi - mini))
+					if (result > 100) then
+						result = 100
+						else
+					if (result < 0) then 
+						result = 0
+					end
+				end
 					telemVal = string.format("%.1f", result)
 				else
 					local result = (((mini - tvalue) * 100) / (mini - maxi))
+					if (result < 0) then
+						result = 0
+					else
+					if (result > 100) then
+						result = 100
+					end
+					end
 					telemVal = string.format("%.1f", result)
 				end
-				if (string.format("%s", asce) == "1") then
-					if (telemVal <= alarm) then
-						system.setControl(1, 1 ,1000,1)
+				if (enalm == 2) then
+					if (asce == 2) then
+						if (telemVal <= alarm) then
+							system.setControl(1, 1 ,1000,1)
+						else
+							system.setControl(1, 0 ,1000,1)
+						end
 					else
-						system.setControl(1, 0 ,1000,1)
+						if (telemVal >= alarm) then
+							system.setControl(1, 1 ,1000,1)
+						else
+							system.setControl(1, 0 ,1000,1)
+						end
 					end
 				else
-					if (telemVal >= alarm) then
-						system.setControl(1, 1 ,1000,1)
-					else
-						system.setControl(1, 0 ,1000,1)
-					end
+					system.setControl(1, 0 ,1000,1)
 				end
 			else
 				telemVal = "-"
@@ -155,12 +193,12 @@ local function init()
 	mini = system.pLoad("mini",0)
 	maxi = system.pLoad("maxi",0)
 	alarm = system.pLoad("alarm",0)
-	asce = system.pLoad("asce",0)
+	asce = system.pLoad("asce",1)
+	enalm = system.pLoad("enalm",1)
 	telemVal = "-"
 	system.registerForm(1, MENU_APPS, appName, initForm)
 	system.registerTelemetry(1,label,2,printTelemetry)
 	system.registerControl (1, "PercentageCtrl", "C01")
-	system.setControl(1, 0 ,1000,1)
 end
 --------------------------------------------------------------------------------
-return {init=init, loop=loop, author="RC-Thoughts", version="1.0", name=appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.1", name=appName}
