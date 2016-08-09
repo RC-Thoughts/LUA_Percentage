@@ -25,13 +25,13 @@ local enalarmlist = {"No", "Yes"}
 local ascelist = {"No", "Yes"}
 --------------------------------------------------------------------------------
 local sensors = system.getSensors()
-	for i,sensor in ipairs(sensors) do
-		if (sensor.label ~= "") then
-			table.insert(sensorLalist, string.format("%s", sensor.label))
-			table.insert(sensorIdlist, string.format("%s", sensor.id))
-			table.insert(sensorPalist, string.format("%s", sensor.param))
-		end
+for i,sensor in ipairs(sensors) do
+	if (sensor.label ~= "") then
+		table.insert(sensorLalist, string.format("%s", sensor.label))
+		table.insert(sensorIdlist, string.format("%s", sensor.id))
+		table.insert(sensorPalist, string.format("%s", sensor.param))
 	end
+end
 --------------------------------------------------------------------------------
 local function labelChanged(value)
 	label=value
@@ -85,7 +85,7 @@ local function initForm()
 	form.addRow(2)
 	form.addLabel({label="Select sensor"})
 	form.addSelectbox(sensorLalist,sens,true,sensorChanged)
-
+	
 	form.addRow(2)
 	form.addLabel({label="Sensor low value"})
 	form.addIntbox(mini,0,32767,0,0,1,miniChanged)
@@ -93,7 +93,7 @@ local function initForm()
 	form.addRow(2)
 	form.addLabel({label="Sensor high value"})
 	form.addIntbox(maxi,0,32767,0,0,1,maxiChanged)
-
+	
 	form.addRow(1)
 	form.addLabel({label="Alarm",font=FONT_BOLD})
 	
@@ -108,7 +108,7 @@ local function initForm()
 	form.addRow(2)
 	form.addLabel({label="Alarm point value"})
 	form.addIntbox(alarm,0,32767,0,0,1,alarmChanged)
-
+	
 	form.addRow(1)
 	form.addLabel({label="Powered by RC-Thoughts.com",font=FONT_MINI, alignRight=true})
 end
@@ -118,7 +118,7 @@ local function printTelemetry()
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MAXI,"-"),10,"-",FONT_MAXI)
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),54,"RC-Thoughts.com",FONT_MINI)
 		lcd.drawImage(1,51, ":graph")
-	else
+		else
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MAXI,string.format("%s%%", telemVal)),10,string.format("%s%%", telemVal),FONT_MAXI)
 		lcd.drawText(145 - lcd.getTextWidth(FONT_MINI,"RC-Thoughts.com"),54,"RC-Thoughts.com",FONT_MINI)
 		lcd.drawImage(1,51, ":graph")
@@ -144,19 +144,19 @@ local function loop()
 					if (result > 100) then
 						result = 100
 						else
-					if (result < 0) then 
-						result = 0
+						if (result < 0) then 
+							result = 0
+						end
 					end
-				end
 					telemVal = string.format("%.1f", result)
-				else
+					else
 					local result = (((mini - tvalue) * 100) / (mini - maxi))
 					if (result < 0) then
 						result = 0
-					else
-					if (result > 100) then
-						result = 100
-					end
+						else
+						if (result > 100) then
+							result = 100
+						end
 					end
 					telemVal = string.format("%.1f", result)
 				end
@@ -164,20 +164,20 @@ local function loop()
 					if (asce == 2) then
 						if (telemVal <= alarm) then
 							system.setControl(1, 1 ,1000,1)
-						else
+							else
 							system.setControl(1, 0 ,1000,1)
 						end
-					else
+						else
 						if (telemVal >= alarm) then
 							system.setControl(1, 1 ,1000,1)
-						else
+							else
 							system.setControl(1, 0 ,1000,1)
 						end
 					end
-				else
+					else
 					system.setControl(1, 0 ,1000,1)
 				end
-			else
+				else
 				telemVal = "-"
 			end
 		end
