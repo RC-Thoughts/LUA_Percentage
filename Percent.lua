@@ -206,4 +206,4 @@ local function init()
 	system.registerControl (1, "PercentageCtrl", "C01")
 end
 --------------------------------------------------------------------------------
-return {init=init, loop=loop, author="RC-Thoughts", version="1.1", name=appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.2", name=appName} 
