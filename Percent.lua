@@ -11,7 +11,7 @@
 	
 	I am not responsible for anything you mess up with this.
 	
-	Tero @ RC-Thoughts.com 2016
+	Released under MIT-license by Tero @ RC-Thoughts.com 2016
 --]]
 
 local appName = "Percentage Display"
