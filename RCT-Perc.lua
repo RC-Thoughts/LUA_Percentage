@@ -225,8 +225,7 @@ local function initForm(subform)
 		
 		else
 		-- If we are on second app build the form for display
-		if(subform == 2) then
-			
+		if(subform == 2) then		
 			form.setButton(1,"Sen 1",ENABLED)
 			form.setButton(2,"Sen 2",HIGHLIGHTED)
 			
@@ -286,13 +285,11 @@ local function keyPressed(key)
 			form.reinit(1)
 			else if(formID == 2) then
 				form.reinit(1)
-				else 
 			end
 		end
 		else if(key == KEY_2) then
 			if(formID == 1) then
 				form.reinit(2)
-				else 
 			end
 		end
 	end
@@ -301,7 +298,7 @@ end
 -- Runtime functions, read sensor, convert to percentage, keep percentage between 0 and 100 at all times
 local function loop()
 	local sensor = system.getSensorByID(id, param)
-	if (sensor ~= nil) then
+	if(sensor and sensor.valid) then
 		tvalue = string.format("%s", sensor.value)
 		if (mini < maxi) then
 			local result = (((tvalue - mini) * 100) / (maxi - mini))
@@ -344,9 +341,10 @@ local function loop()
 		else
 		telemVal = "-"
 	end
+	
 	-- Take care of percentage 2
 	local sensor = system.getSensorByID(id2, param2)
-	if (sensor ~= nil) then
+	if(sensor and sensor.valid) then
 		tvalue2 = string.format("%s", sensor.value)
 		if (mini2 < maxi2) then
 			local result2 = (((tvalue2 - mini2) * 100) / (maxi2 - mini2))
@@ -426,4 +424,4 @@ local function init()
 	system.registerControl (2, "PercentageCtrl", "C02")
 end
 --------------------------------------------------------------------------------
-return {init=init, loop=loop, author="RC-Thoughts", version="1.5", name=appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.6", name=appName} 
