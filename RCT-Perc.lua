@@ -22,6 +22,7 @@ local label, sens, sensid, senspa, mini, maxi, id, param
 local label2, sens2, sensid2, senspa2, mini2, maxi2, id2, param2 
 local telem, telemVal, alarm, asce, limit, enalm
 local telem2, telemVal2, alarm2, asce2, limit2, enalm2
+local result, result2, tvalue, tvalue2, limit, limit2
 local sensorLalist = {"..."}
 local sensorLalist2 = {"..."}
 local sensorIdlist = {"..."}
@@ -86,6 +87,10 @@ local function sensorChanged(value)
 	system.pSave("sens",value)
 	system.pSave("sensid",value)
 	system.pSave("senspa",value)
+	id = string.format("%s", sensorIdlist[sensid])
+	param = string.format("%s", sensorPalist[senspa])
+	system.pSave("id", id)
+	system.pSave("param", param)
 end
 
 local function miniChanged(value)
@@ -102,6 +107,8 @@ local function alarmChanged(value)
 	alarm=value
 	system.pSave("alarm",value)
 	system.setControl(1,0,0,0)
+	local alarmTr = string.format("%.2f", alarm)
+	system.pSave("alarmTr", alarmTr)
 end
 
 local function asceChanged(value)
@@ -129,6 +136,10 @@ local function sensorChanged2(value)
 	system.pSave("sens2",value)
 	system.pSave("sensid2",value)
 	system.pSave("senspa2",value)
+	id2 = string.format("%s", sensorIdlist2[sensid2])
+	param2 = string.format("%s", sensorPalist2[senspa2])
+	system.pSave("id2", id2)
+	system.pSave("param2", param2)
 end
 
 local function miniChanged2(value)
@@ -145,6 +156,8 @@ local function alarmChanged2(value)
 	alarm2=value
 	system.pSave("alarm2",value)
 	system.setControl(2,0,0,0)
+	local alarmTr = string.format("%.2f", alarm2)
+	system.pSave("alarmTr2", alarmTr2)
 end
 
 local function asceChanged2(value)
@@ -287,118 +300,94 @@ end
 ---------------------------------------------------------------------------------
 -- Runtime functions, read sensor, convert to percentage, keep percentage between 0 and 100 at all times
 local function loop()
-	local id = string.format("%s", sensorIdlist[sensid])
-	local id2 = string.format("%s", sensorIdlist2[sensid2])
-	local param = string.format("%s", sensorPalist[senspa])
-	local param2 = string.format("%s", sensorPalist2[senspa2])
-	local result = "0"
-	local result2 = "0"
-	local tvalue = "0"
-	local tvalue2 = "0"
-	local limit = "0"
-	local limit2 = "0"
-	local alarm = string.format("%.2f", alarm)
-	local alarm2 = string.format("%.2f", alarm2)
-	telemVal = "0"
-	telemVal2 = "0"
-	
-	-- Take care of percentage 1
-	local sensors = system.getSensors()
-	for i,sensor in ipairs(sensors) do
-		if (string.format("%s", sensor.id) == id) and (string.format("%s", sensor.param) == param) then
-			if sensor.valid then
-				tvalue = string.format("%s", sensor.value)
-				if (mini < maxi) then
-					local result = (((tvalue - mini) * 100) / (maxi - mini))
-					if (result > 100) then
-						result = 100
-						else
-						if (result < 0) then 
-							result = 0
-						end
-					end
-					telemVal = string.format("%.1f", result)
-					else
-					local result = (((mini - tvalue) * 100) / (mini - maxi))
-					if (result < 0) then
-						result = 0
-						else
-						if (result > 100) then
-							result = 100
-						end
-					end
-					telemVal = string.format("%.1f", result)
+	local sensor = system.getSensorByID(id, param)
+	if (sensor ~= nil) then
+		tvalue = string.format("%s", sensor.value)
+		if (mini < maxi) then
+			local result = (((tvalue - mini) * 100) / (maxi - mini))
+			if (result > 100) then
+				result = 100
+				else
+				if (result < 0) then 
+					result = 0
 				end
-				if (enalm == 2) then
-					if (asce == 2) then
-						if (telemVal <= alarm) then
-							system.setControl(1,1,0,0)
-							else
-							system.setControl(1,0,0,0)
-						end
-						else
-						if (telemVal >= alarm) then
-							system.setControl(1,1,0,1)
-							else
-							system.setControl(1,0,0,1)
-						end
-					end
+			end
+			telemVal = string.format("%.1f", result)
+			else
+			local result = (((mini - tvalue) * 100) / (mini - maxi))
+			if (result < 0) then
+				result = 0
+				else
+				if (result > 100) then
+					result = 100
+				end
+			end
+			telemVal = string.format("%.1f", result)
+		end
+		if (enalm == 2) then
+			if (asce == 2) then
+				if (telemVal <= alarmTr) then
+					system.setControl(1,1,0,0)
 					else
-					system.setControl(1, 0 ,1000,1)
+					system.setControl(1,0,0,0)
 				end
 				else
-				telemVal = "-"
+				if (telemVal >= alarmTr) then
+					system.setControl(1,1,0,1)
+					else
+					system.setControl(1,0,0,1)
+				end
 			end
+			else
+			system.setControl(1, 0 ,1000,1)
 		end
+		else
+		telemVal = "-"
 	end
 	-- Take care of percentage 2
-	local sensors = system.getSensors()
-	for i,sensor in ipairs(sensors) do
-		if (string.format("%s", sensor.id) == id2) and (string.format("%s", sensor.param) == param2) then
-			if sensor.valid then
-				tvalue2 = string.format("%s", sensor.value)
-				if (mini2 < maxi2) then
-					local result2 = (((tvalue2 - mini2) * 100) / (maxi2 - mini2))
-					if (result2 > 100) then
-						result2 = 100
-						else
-						if (result2 < 0) then 
-							result2 = 0
-						end
-					end
-					telemVal2 = string.format("%.1f", result2)
-					else
-					local result2 = (((mini2 - tvalue2) * 100) / (mini2 - maxi2))
-					if (result2 < 0) then
-						result2 = 0
-						else
-						if (result2 > 100) then
-							result2 = 100
-						end
-					end
-					telemVal2 = string.format("%.1f", result2)
+	local sensor = system.getSensorByID(id2, param2)
+	if (sensor ~= nil) then
+		tvalue2 = string.format("%s", sensor.value)
+		if (mini2 < maxi2) then
+			local result2 = (((tvalue2 - mini2) * 100) / (maxi2 - mini2))
+			if (result2 > 100) then
+				result2 = 100
+				else
+				if (result2 < 0) then 
+					result2 = 0
 				end
-				if (enalm2 == 2) then
-					if (asce2 == 2) then
-						if (telemVal2 <= alarm2) then
-							system.setControl(2,1,0,0)
-							else
-							system.setControl(2,0,0,0)
-						end
-						else
-						if (telemVal2 >= alarm2) then
-							system.setControl(2,1,0,0)
-							else
-							system.setControl(2,0,0,1)
-						end
-					end
+			end
+			telemVal2 = string.format("%.1f", result2)
+			else
+			local result2 = (((mini2 - tvalue2) * 100) / (mini2 - maxi2))
+			if (result2 < 0) then
+				result2 = 0
+				else
+				if (result2 > 100) then
+					result2 = 100
+				end
+			end
+			telemVal2 = string.format("%.1f", result2)
+		end
+		if (enalm2 == 2) then
+			if (asce2 == 2) then
+				if (telemVal2 <= alarmTr2) then
+					system.setControl(2,1,0,0)
 					else
 					system.setControl(2,0,0,0)
 				end
 				else
-				telemVal2 = "-"
+				if (telemVal2 >= alarmTr2) then
+					system.setControl(2,1,0,0)
+					else
+					system.setControl(2,0,0,1)
+				end
 			end
+			else
+			system.setControl(2,0,0,0)
 		end
+		else
+		telemVal2 = "-"
 	end
 end
 --------------------------------------------------------------------------------
@@ -419,10 +408,16 @@ local function init()
 	maxi2 = system.pLoad("maxi2",0)
 	alarm = system.pLoad("alarm",0)
 	alarm2 = system.pLoad("alarm2",0)
+	alarmTr = system.pLoad("alarmTr",0)
+	alarmTr2 = system.pLoad("alarmTr2",0)
 	asce = system.pLoad("asce",1)
 	asce2 = system.pLoad("asce2",1)
 	enalm = system.pLoad("enalm",1)
 	enalm2 = system.pLoad("enalm2",1)
+	id = system.pLoad("id",0)
+	id2 = system.pLoad("id2",0)
+	param = system.pLoad("param",0)
+	param2 = system.pLoad("param2",0)
 	telemVal = "-"
 	telemVal2 = "-"
 	system.registerTelemetry(1,label,2,printTelemetry)
@@ -431,4 +426,4 @@ local function init()
 	system.registerControl (2, "PercentageCtrl", "C02")
 end
 --------------------------------------------------------------------------------
-return {init=init, loop=loop, author="RC-Thoughts", version="1.4", name=appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.5", name=appName} 
