@@ -336,7 +336,7 @@ local function loop()
 				end
 			end
 			else
-			system.setControl(1, 0 ,1000,1)
+			system.setControl(1, 0 ,0,1)
 		end
 		else
 		telemVal = "-"
