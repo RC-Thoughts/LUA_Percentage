@@ -89,6 +89,10 @@ local function sensorChanged(value)
 	system.pSave("senspa",value)
 	id = string.format("%s", sensorIdlist[sensid])
 	param = string.format("%s", sensorPalist[senspa])
+	if (id == "...") then
+		id = 0
+		param = 0
+	end
 	system.pSave("id", id)
 	system.pSave("param", param)
 end
@@ -138,6 +142,10 @@ local function sensorChanged2(value)
 	system.pSave("senspa2",value)
 	id2 = string.format("%s", sensorIdlist2[sensid2])
 	param2 = string.format("%s", sensorPalist2[senspa2])
+	if (id2 == "...") then
+		id2 = 0
+		param2 = 0
+	end
 	system.pSave("id2", id2)
 	system.pSave("param2", param2)
 end
@@ -156,7 +164,7 @@ local function alarmChanged2(value)
 	alarm2=value
 	system.pSave("alarm2",value)
 	system.setControl(2,0,0,0)
-	local alarmTr = string.format("%.2f", alarm2)
+	local alarmTr2 = string.format("%.2f", alarm2)
 	system.pSave("alarmTr2", alarmTr2)
 end
 
@@ -336,7 +344,7 @@ local function loop()
 				end
 			end
 			else
-			system.setControl(1, 0 ,0,1)
+			system.setControl(1, 0 ,1000,1)
 		end
 		else
 		telemVal = "-"
@@ -424,4 +432,4 @@ local function init()
 	system.registerControl (2, "PercentageCtrl", "C02")
 end
 --------------------------------------------------------------------------------
-return {init=init, loop=loop, author="RC-Thoughts", version="1.6", name=appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.7", name=appName} 
