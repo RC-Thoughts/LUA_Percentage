@@ -54,7 +54,7 @@ local function setLanguage()
 	local file = readFile("Apps/Lang/RCT-Perc.jsn")
 	local obj = json.decode(file)  
 	if(obj) then
-		trans = obj[lng] or obj[obj.default]
+		trans2 = obj[lng] or obj[obj.default]
 	end                     
 end
 ----------------------------------------------------------------------
@@ -213,40 +213,40 @@ local function initForm(subform)
 		form.addLabel({label="---     RC-Thoughts Jeti Tools      ---",font=FONT_BIG})
 		
 		form.addRow(1)
-		form.addLabel({label=trans.labelW1,font=FONT_BOLD})
+		form.addLabel({label=trans2.labelW1,font=FONT_BOLD})
 		
 		form.addRow(2)
-		form.addLabel({label=trans.winLbl,width=160})
+		form.addLabel({label=trans2.winLbl,width=160})
 		form.addTextbox(label,14,labelChanged)
 		
 		form.addRow(1)
-		form.addLabel({label=trans.sensorLbl1,font=FONT_BOLD})
+		form.addLabel({label=trans2.sensorLbl1,font=FONT_BOLD})
 		
 		form.addRow(2)
-		form.addLabel({label=trans.selSens})
+		form.addLabel({label=trans2.selSens})
 		form.addSelectbox(sensorLalist,sens,true,sensorChanged)
 		
 		form.addRow(2)
-		form.addLabel({label=trans.sensLow})
+		form.addLabel({label=trans2.sensLow})
 		form.addIntbox(mini,0,32767,0,0,1,miniChanged)
 		
 		form.addRow(2)
-		form.addLabel({label=trans.sensHigh})
+		form.addLabel({label=trans2.sensHigh})
 		form.addIntbox(maxi,0,32767,0,0,1,maxiChanged)
 		
 		form.addRow(1)
-		form.addLabel({label=trans.almTxt1,font=FONT_BOLD})
+		form.addLabel({label=trans2.almTxt1,font=FONT_BOLD})
 		
 		form.addRow(2)
-		form.addLabel({label=trans.almEn})
+		form.addLabel({label=trans2.almEn})
 		form.addSelectbox(enalarmlist,enalm,false,enalmChanged)
 		
 		form.addRow(2)
-		form.addLabel({label=trans.almLow})
+		form.addLabel({label=trans2.almLow})
 		form.addSelectbox(ascelist,asce,false,asceChanged)
 		
 		form.addRow(2)
-		form.addLabel({label=trans.almPnt})
+		form.addLabel({label=trans2.almPnt})
 		form.addIntbox(alarm,0,32767,0,0,1,alarmChanged)
 		
 		form.addRow(1)
@@ -265,40 +265,40 @@ local function initForm(subform)
 			form.addLabel({label="---     RC-Thoughts Jeti Tools      ---",font=FONT_BIG})
 			
 			form.addRow(1)
-			form.addLabel({label=trans.labelW2,font=FONT_BOLD})
+			form.addLabel({label=trans2.labelW2,font=FONT_BOLD})
 			
 			form.addRow(2)
-			form.addLabel({label=trans.winLbl,width=160})
+			form.addLabel({label=trans2.winLbl,width=160})
 			form.addTextbox(label2,14,labelChanged2)
 			
 			form.addRow(1)
-			form.addLabel({label=trans.sensorLbl2,font=FONT_BOLD})
+			form.addLabel({label=trans2.sensorLbl2,font=FONT_BOLD})
 			
 			form.addRow(2)
-			form.addLabel({label=trans.selSens})
+			form.addLabel({label=trans2.selSens})
 			form.addSelectbox(sensorLalist2,sens2,true,sensorChanged2)
 			
 			form.addRow(2)
-			form.addLabel({label=trans.sensLow})
+			form.addLabel({label=trans2.sensLow})
 			form.addIntbox(mini2,0,32767,0,0,1,miniChanged2)
 			
 			form.addRow(2)
-			form.addLabel({label=trans.sensHigh})
+			form.addLabel({label=trans2.sensHigh})
 			form.addIntbox(maxi2,0,32767,0,0,1,maxiChanged2)
 			
 			form.addRow(1)
-			form.addLabel({label=trans.almTxt2,font=FONT_BOLD})
+			form.addLabel({label=trans2.almTxt2,font=FONT_BOLD})
 			
 			form.addRow(2)
-			form.addLabel({label=trans.almEn})
+			form.addLabel({label=trans2.almEn})
 			form.addSelectbox(enalarmlist2,enalm2,false,enalmChanged2)
 			
 			form.addRow(2)
-			form.addLabel({label=trans.almLow})
+			form.addLabel({label=trans2.almLow})
 			form.addSelectbox(ascelist2,asce2,false,asceChanged2)
 			
 			form.addRow(2)
-			form.addLabel({label=trans.almPnt})
+			form.addLabel({label=trans2.almPnt})
 			form.addIntbox(alarm2,0,32767,0,0,1,alarmChanged2)
 			
 			form.addRow(1)
@@ -423,10 +423,9 @@ end
 ----------------------------------------------------------------------
 -- Application initialization
 local function init()
-	setLanguage()
-	system.registerForm(1,MENU_APPS,trans.appName,initForm,keyPressed)
-	label = system.pLoad("label",trans.labelDef1)
-	label2 = system.pLoad("label2",trans.labelDef2)
+	system.registerForm(1,MENU_APPS,trans2.appName,initForm,keyPressed)
+	label = system.pLoad("label",trans2.labelDef1)
+	label2 = system.pLoad("label2",trans2.labelDef2)
 	sens = system.pLoad("sens",0)
 	sens2 = system.pLoad("sens2",0)
 	sensid = system.pLoad("sensid",0)
@@ -451,19 +450,19 @@ local function init()
 	param2 = system.pLoad("param2",0)
 	telemVal = "-"
 	telemVal2 = "-"
-	table.insert(enalarmlist,trans.neg)
-	table.insert(enalarmlist,trans.pos)
-	table.insert(enalarmlist2,trans.neg)
-	table.insert(enalarmlist2,trans.pos)
-	table.insert(ascelist,trans.neg)
-	table.insert(ascelist,trans.pos)
-	table.insert(ascelist2,trans.neg)
-	table.insert(ascelist2,trans.pos)
+	table.insert(enalarmlist,trans2.neg)
+	table.insert(enalarmlist,trans2.pos)
+	table.insert(enalarmlist2,trans2.neg)
+	table.insert(enalarmlist2,trans2.pos)
+	table.insert(ascelist,trans2.neg)
+	table.insert(ascelist,trans2.pos)
+	table.insert(ascelist2,trans2.neg)
+	table.insert(ascelist2,trans2.pos)
 	system.registerTelemetry(1,label,2,printTelemetry)
 	system.registerTelemetry(2,label2,2,printTelemetry2)
-	system.registerControl(1,trans.control1,trans.cl1)
-	system.registerControl(2,trans.control2,trans.cl2)
+	system.registerControl(1,trans2.control1,trans2.cl1)
+	system.registerControl(2,trans2.control2,trans2.cl2)
 end
 ----------------------------------------------------------------------
 setLanguage()
-return {init=init, loop=loop, author="RC-Thoughts", version="1.9", name=trans.appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.9", name=trans2.appName} 
