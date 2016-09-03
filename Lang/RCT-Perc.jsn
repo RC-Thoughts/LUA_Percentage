@@ -47,5 +47,29 @@
 	"cl2":"C02",
 	"pos":"Ja",
 	"neg":"Nein"
+  },
+  "fr":{
+    "appName":"Affichage pourcentage",
+	"labelW1":"Affichage pourcentage 1",
+	"labelW2":"Affichage pourcentage 2",
+	"labelDef1":"Pourcentage 1",
+	"labelDef2":"Pourcentage 2",
+	"winLbl":"Titre Fenêtre",
+	"sensorLbl1":"Capteur 1",
+	"sensorLbl2":"Capteur 2",
+    "selSens":"Selection Capteur",
+	"sensLow":"Capteur: Faible Valeur",
+	"sensHigh":"Capteur: Haute Valeur",
+	"almTxt1":"Alarm 1",
+	"almTxt2":"Alarm 2",
+	"almEn":"Activer Alarme",
+	"almLow":"Alarme Basse",
+	"almPnt":"Seuil Alarme ",
+	"control1":"Ctrl Pourcentage ",
+	"control2":"Ctrl Pourcentage ",
+	"cl1":"C01",
+	"cl2":"C02",
+	"pos":"Oui",
+	"neg":"No"
   }
 }

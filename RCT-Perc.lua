@@ -6,6 +6,8 @@
 	
 	Also it makes a LUA control (switch) that can be used as
 	any other switch, voices, alarms etc.
+	
+	French translation courtesy from Daniel Memim
 	---------------------------------------------------------
 	Percentage application is part of RC-Thoughts Jeti Tools.
 	---------------------------------------------------------
