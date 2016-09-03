@@ -423,6 +423,7 @@ end
 ----------------------------------------------------------------------
 -- Application initialization
 local function init()
+	setLanguage()
 	system.registerForm(1,MENU_APPS,trans.appName,initForm,keyPressed)
 	label = system.pLoad("label",trans.labelDef1)
 	label2 = system.pLoad("label2",trans.labelDef2)
@@ -460,9 +461,9 @@ local function init()
 	table.insert(ascelist2,trans.pos)
 	system.registerTelemetry(1,label,2,printTelemetry)
 	system.registerTelemetry(2,label2,2,printTelemetry2)
-	system.registerControl (1,trans.control1,trans.cl1)
-	system.registerControl (2,trans.control2,trans.cl2)
+	system.registerControl(1,trans.control1,trans.cl1)
+	system.registerControl(2,trans.control2,trans.cl2)
 end
 ----------------------------------------------------------------------
 setLanguage()
-return {init=init, loop=loop, author="RC-Thoughts", version="1.8", name=trans.appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="1.9", name=trans.appName} 
