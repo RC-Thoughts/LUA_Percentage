@@ -252,7 +252,7 @@ local function initForm(subform)
 		form.addIntbox(alarm,0,32767,0,0,1,alarmChanged)
 		
 		form.addRow(1)
-		form.addLabel({label="Powered by RC-Thoughts.com",font=FONT_MINI, alignRight=true})
+		form.addLabel({label="Powered by RC-Thoughts.com - v."..percVersion.." ",font=FONT_MINI, alignRight=true})
 		
 		form.setFocusedRow (1)
 		formID = 1
@@ -304,7 +304,7 @@ local function initForm(subform)
 			form.addIntbox(alarm2,0,32767,0,0,1,alarmChanged2)
 			
 			form.addRow(1)
-			form.addLabel({label="Powered by RC-Thoughts.com",font=FONT_MINI, alignRight=true})
+			form.addLabel({label="Powered by RC-Thoughts.com - v."..percVersion.." ",font=FONT_MINI, alignRight=true})
 			
 			form.setFocusedRow (1)
 			formID = 2
@@ -466,5 +466,6 @@ local function init()
 	system.registerControl(2,trans2.control2,trans2.cl2)
 end
 ----------------------------------------------------------------------
+percVersion = "1.9"
 setLanguage()
-return {init=init, loop=loop, author="RC-Thoughts", version="1.9", name=trans2.appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version=percVersion, name=trans2.appName} 
