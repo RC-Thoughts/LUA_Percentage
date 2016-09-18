@@ -11,4 +11,4 @@ Installation:
 
 Tero from RC-Thoughts 2016
 
-![Menu-picture](https://www.rc-thoughts.com/wp-content/uploads/2016/08/005.png) ![Display-picture](https://www.rc-thoughts.com/wp-content/uploads/2016/08/rc-thoughts_tools_29.png)
+![Menu-picture](https://www.rc-thoughts.com/wp-content/uploads/2016/08/rct_perc_0001.png) ![Display-picture](https://www.rc-thoughts.com/wp-content/uploads/2016/08/rc-thoughts_tools_29.png)

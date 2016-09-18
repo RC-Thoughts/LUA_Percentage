@@ -123,19 +123,18 @@ local function sensorChanged(value)
 	system.pSave("param", param)
 end
 
-local function dec1Changed(value)
-	dec1=value
-	system.pSave("dec1",value)
-	form.reinit(1)
-	form.setFocusedRow(6)
-end
-
 local function miniChanged(value)
+	if (value == nil) then
+		value = 0
+	end
 	mini=value
 	system.pSave("mini",value)
 end
 
 local function maxiChanged(value)
+	if (value == nil) then
+		value = 0
+	end
 	maxi=value
 	system.pSave("maxi",value)	
 end
@@ -144,8 +143,17 @@ local function alarmChanged(value)
 	alarm=value
 	system.pSave("alarm",value)
 	system.setControl(1,0,0,0)
-	local alarmTr = string.format("%.2f", alarm)
+	alarmTr = string.format("%.2f", alarm)
 	system.pSave("alarmTr", alarmTr)
+end
+
+local function dec1Changed(value)
+	dec1=value
+	system.pSave("dec1",value)
+	form.reinit(1)
+	form.setFocusedRow(6)
+	miniChanged()
+	maxiChanged()
 end
 
 local function asceChanged(value)
@@ -183,19 +191,18 @@ local function sensorChanged2(value)
 	system.pSave("param2", param2)
 end
 
-local function dec2Changed(value)
-	dec2=value
-	system.pSave("dec2",value)
-	form.reinit(2)
-	form.setFocusedRow(6)
-end
-
 local function miniChanged2(value)
+	if (value == nil) then
+		value = 0
+	end
 	mini2=value
 	system.pSave("mini2",value)
 end
 
 local function maxiChanged2(value)
+	if (value == nil) then
+		value = 0
+	end
 	maxi2=value
 	system.pSave("maxi2",value)	
 end
@@ -206,6 +213,15 @@ local function alarmChanged2(value)
 	system.setControl(2,0,0,0)
 	local alarmTr2 = string.format("%.2f", alarm2)
 	system.pSave("alarmTr2", alarmTr2)
+end
+
+local function dec2Changed(value)
+	dec2=value
+	system.pSave("dec2",value)
+	form.reinit(2)
+	form.setFocusedRow(6)
+	miniChanged2()
+	maxiChanged2()
 end
 
 local function asceChanged2(value)
@@ -267,7 +283,7 @@ local function initForm(subform)
 		
 		form.addRow(2)
 		form.addLabel({label=trans2.almPnt})
-		form.addIntbox(alarm,0,32767,0,dec1,1,alarmChanged)
+		form.addIntbox(alarm,0,32767,0,0,1,alarmChanged)
 		
 		form.addRow(1)
 		form.addLabel({label="Powered by RC-Thoughts.com - "..percVersion.." ",font=FONT_MINI, alignRight=true})
@@ -322,7 +338,7 @@ local function initForm(subform)
 			
 			form.addRow(2)
 			form.addLabel({label=trans2.almPnt})
-			form.addIntbox(alarm2,0,32767,0,dec2,1,alarmChanged2)
+			form.addIntbox(alarm2,0,32767,0,0,1,alarmChanged2)
 			
 			form.addRow(1)
 			form.addLabel({label="Powered by RC-Thoughts.com - "..percVersion.." ",font=FONT_MINI, alignRight=true})
@@ -353,6 +369,17 @@ end
 local function loop()
 	local sensor = system.getSensorByID(id, param)
 	if(sensor and sensor.valid) then
+		if(dec1 == 1) then
+			sensor.value = (sensor.value*10)
+			else
+			if(dec1 == 2) then
+				sensor.value = (sensor.value*100)
+				else
+				if(dec1 == 3) then
+					sensor.value = (sensor.value*1000)
+				end
+			end
+		end
 		tvalue = string.format("%s", sensor.value)
 		if (mini < maxi) then
 			local result = (((tvalue - mini) * 100) / (maxi - mini))
@@ -399,6 +426,17 @@ local function loop()
 	-- Take care of percentage 2
 	local sensor = system.getSensorByID(id2, param2)
 	if(sensor and sensor.valid) then
+		if(dec2 == 1) then
+			sensor.value = (sensor.value*10)
+			else
+			if(dec2 == 2) then
+				sensor.value = (sensor.value*100)
+				else
+				if(dec2 == 3) then
+					sensor.value = (sensor.value*1000)
+				end
+			end
+		end
 		tvalue2 = string.format("%s", sensor.value)
 		if (mini2 < maxi2) then
 			local result2 = (((tvalue2 - mini2) * 100) / (maxi2 - mini2))
@@ -488,6 +526,6 @@ local function init()
 	system.registerControl(2,trans2.control2,trans2.cl2)
 end
 ----------------------------------------------------------------------
-percVersion = "v.2.0"
+percVersion = "v.2.1"
 setLanguage()
-return {init=init, loop=loop, author="RC-Thoughts", version="2.0", name=trans2.appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="2.1", name=trans2.appName} 
