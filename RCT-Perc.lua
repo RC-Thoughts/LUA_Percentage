@@ -18,7 +18,7 @@
 -- Locals for the application
 local label, sens, sensid, senspa, mini, maxi, id, param
 local label2, sens2, sensid2, senspa2, mini2, maxi2, id2, param2 
-local telem, telemVal, alarm, asce, limit, enalm
+local telem, telemVal, alarm, asce, limit, enalm, dec1, dec2
 local telem2, telemVal2, alarm2, asce2, limit2, enalm2
 local result, result2, tvalue, tvalue2, limit, limit2
 local sensorLalist = {"..."}
@@ -123,6 +123,13 @@ local function sensorChanged(value)
 	system.pSave("param", param)
 end
 
+local function dec1Changed(value)
+	dec1=value
+	system.pSave("dec1",value)
+	form.reinit(1)
+	form.setFocusedRow(6)
+end
+
 local function miniChanged(value)
 	mini=value
 	system.pSave("mini",value)
@@ -174,6 +181,13 @@ local function sensorChanged2(value)
 	end
 	system.pSave("id2", id2)
 	system.pSave("param2", param2)
+end
+
+local function dec2Changed(value)
+	dec2=value
+	system.pSave("dec2",value)
+	form.reinit(2)
+	form.setFocusedRow(6)
 end
 
 local function miniChanged2(value)
@@ -229,12 +243,16 @@ local function initForm(subform)
 		form.addSelectbox(sensorLalist,sens,true,sensorChanged)
 		
 		form.addRow(2)
+		form.addLabel({label=trans2.decimal})
+		form.addIntbox(dec1,0,3,0,0,1,dec1Changed)
+		
+		form.addRow(2)
 		form.addLabel({label=trans2.sensLow})
-		form.addIntbox(mini,0,32767,0,0,1,miniChanged)
+		form.addIntbox(mini,0,32767,0,dec1,1,miniChanged)
 		
 		form.addRow(2)
 		form.addLabel({label=trans2.sensHigh})
-		form.addIntbox(maxi,0,32767,0,0,1,maxiChanged)
+		form.addIntbox(maxi,0,32767,0,dec1,1,maxiChanged)
 		
 		form.addRow(1)
 		form.addLabel({label=trans2.almTxt1,font=FONT_BOLD})
@@ -249,12 +267,11 @@ local function initForm(subform)
 		
 		form.addRow(2)
 		form.addLabel({label=trans2.almPnt})
-		form.addIntbox(alarm,0,32767,0,0,1,alarmChanged)
+		form.addIntbox(alarm,0,32767,0,dec1,1,alarmChanged)
 		
 		form.addRow(1)
-		form.addLabel({label="Powered by RC-Thoughts.com - v."..percVersion.." ",font=FONT_MINI, alignRight=true})
+		form.addLabel({label="Powered by RC-Thoughts.com - "..percVersion.." ",font=FONT_MINI, alignRight=true})
 		
-		form.setFocusedRow (1)
 		formID = 1
 		
 		else
@@ -281,12 +298,16 @@ local function initForm(subform)
 			form.addSelectbox(sensorLalist2,sens2,true,sensorChanged2)
 			
 			form.addRow(2)
+			form.addLabel({label=trans2.decimal})
+			form.addIntbox(dec2,0,3,0,0,1,dec2Changed)
+			
+			form.addRow(2)
 			form.addLabel({label=trans2.sensLow})
-			form.addIntbox(mini2,0,32767,0,0,1,miniChanged2)
+			form.addIntbox(mini2,0,32767,0,dec2,1,miniChanged2)
 			
 			form.addRow(2)
 			form.addLabel({label=trans2.sensHigh})
-			form.addIntbox(maxi2,0,32767,0,0,1,maxiChanged2)
+			form.addIntbox(maxi2,0,32767,0,dec2,1,maxiChanged2)
 			
 			form.addRow(1)
 			form.addLabel({label=trans2.almTxt2,font=FONT_BOLD})
@@ -301,12 +322,11 @@ local function initForm(subform)
 			
 			form.addRow(2)
 			form.addLabel({label=trans2.almPnt})
-			form.addIntbox(alarm2,0,32767,0,0,1,alarmChanged2)
+			form.addIntbox(alarm2,0,32767,0,dec2,1,alarmChanged2)
 			
 			form.addRow(1)
-			form.addLabel({label="Powered by RC-Thoughts.com - v."..percVersion.." ",font=FONT_MINI, alignRight=true})
+			form.addLabel({label="Powered by RC-Thoughts.com - "..percVersion.." ",font=FONT_MINI, alignRight=true})
 			
-			form.setFocusedRow (1)
 			formID = 2
 		end
 	end
@@ -450,6 +470,8 @@ local function init()
 	id2 = system.pLoad("id2",0)
 	param = system.pLoad("param",0)
 	param2 = system.pLoad("param2",0)
+	dec1 = system.pLoad("dec1",0)
+	dec2 = system.pLoad("dec2",0)
 	telemVal = "-"
 	telemVal2 = "-"
 	table.insert(enalarmlist,trans2.neg)
@@ -466,6 +488,6 @@ local function init()
 	system.registerControl(2,trans2.control2,trans2.cl2)
 end
 ----------------------------------------------------------------------
-percVersion = "1.9"
+percVersion = "v.2.0"
 setLanguage()
-return {init=init, loop=loop, author="RC-Thoughts", version=percVersion, name=trans2.appName} 
+return {init=init, loop=loop, author="RC-Thoughts", version="2.0", name=trans2.appName} 
