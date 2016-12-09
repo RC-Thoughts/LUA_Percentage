@@ -8,6 +8,7 @@
 	any other switch, voices, alarms etc.
 	
 	French translation courtesy from Daniel Memim
+	Spanish translation courtesy from César Casado
 	---------------------------------------------------------
 	Percentage application is part of RC-Thoughts Jeti Tools.
 	---------------------------------------------------------
@@ -526,6 +527,6 @@ local function init()
 	system.registerControl(2,trans2.control2,trans2.cl2)
 end
 ----------------------------------------------------------------------
-percVersion = "v.2.1"
+percVersion = "v.2.2"
 setLanguage()
 return {init=init, loop=loop, author="RC-Thoughts", version="2.1", name=trans2.appName} 
