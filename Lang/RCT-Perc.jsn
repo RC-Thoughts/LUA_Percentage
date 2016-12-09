@@ -74,5 +74,30 @@
 	"cl2":"C02",
 	"pos":"Oui",
 	"neg":"No"
+  },
+  "es":{
+    "appName":"Pantalla de porcentaje",
+	"labelW1":"Pantalla de porcentaje 1",
+	"labelW2":"Pantalla de porcentaje 2",
+	"labelDef1":"Porcentaje 1",
+	"labelDef2":"Porcentaje 2",
+	"winLbl":"Etiqueta de ventana",
+	"sensorLbl1":"Sensor 1",
+	"sensorLbl2":"Sensor 2",
+    "selSens":"Selecciona Sensor",
+	"decimal":"Decimales",
+	"sensLow":"Valor Bajo de Sensor",
+	"sensHigh":"Valor Alto de Sensor",
+	"almTxt1":"Alarma 1",
+	"almTxt2":"Alarma 2",
+	"almEn":"Activar Alarma",
+	"almLow":"Alarma Baja",
+	"almPnt":"Umbral de alarma (%)",
+	"control1":"Ctrol. Porcentaje",
+	"control2":"Ctrol. Porcentaje",
+	"cl1":"C01",
+	"cl2":"C02",
+	"pos":"Sí",
+	"neg":"No"
   }
 }
