@@ -99,5 +99,30 @@
 	"cl2":"C02",
 	"pos":"Sí",
 	"neg":"No"
-  }
+  },
+  “it":{
+	"appName":"Percentuale",
+	"labelW1":"Percentuale Display 1",
+	"labelW2":"Percentuale Display 2",
+	"labelDef1":"Percentuale 1",
+	"labelDef2":"Percentuale 2",
+	"winLbl”:”Titolo finestra",
+	"sensorLbl1":"Sensore 1",
+	"sensorLbl2":"Sensore 2",
+	"selSens":"Selezione Sensore",
+	"decimal":"Decimali",
+	"sensLow”:”Valore sensore basso",
+	"sensHigh”:”Valore sensore alto",
+	"almTxt1":"Allarme 1",
+	"almTxt2":"Allarme 2",
+	"almEn”:"Attivazione Allarme",
+	"almLow":”Allarme basso",
+	"almPnt”:”Valore punto allarme (%)",
+	"control1”:”Ctrl Percentuale",
+	"control2”:”Ctrl Percentuale",
+	"cl1":"C01",
+	"cl2":"C02",
+	"pos”:"Sì",
+	"neg":"No"
+	}
 }
