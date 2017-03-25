@@ -16,6 +16,7 @@
 	Released under MIT-license by Tero @ RC-Thoughts.com 2016
 	---------------------------------------------------------
 --]]
+collectgarbage()
 ----------------------------------------------------------------------
 -- Locals for the application
 local label, sens, sensid, senspa, mini, maxi, id, param
@@ -34,32 +35,14 @@ local enalarmlist2 = {}
 local ascelist = {}
 local ascelist2 = {}
 ----------------------------------------------------------------------
--- Function for translation file-reading
-local function readFile(path) 
-	local f = io.open(path,"r")
-	local lines={}
-	if(f) then
-		while 1 do 
-			local buf=io.read(f,512)
-			if(buf ~= "")then 
-				lines[#lines+1] = buf
-				else
-				break   
-			end   
-		end 
-		io.close(f)
-		return table.concat(lines,"") 
-	end
-end 
-----------------------------------------------------------------------
 -- Read translations
-local function setLanguage()	
-	local lng=system.getLocale();
-	local file = readFile("Apps/Lang/RCT-Perc.jsn")
-	local obj = json.decode(file)  
-	if(obj) then
-		trans2 = obj[lng] or obj[obj.default]
-	end                     
+local function setLanguage()
+    local lng=system.getLocale()
+    local file = io.readall("Apps/Lang/RCT-Perc.jsn")
+    local obj = json.decode(file)
+    if(obj) then
+        trans2 = obj[lng] or obj[obj.default]
+    end
 end
 ----------------------------------------------------------------------
 -- Read available sensors for user to select
@@ -348,6 +331,7 @@ local function initForm(subform)
 			formID = 2
 		end
 	end
+    collectgarbage()
 end
 ----------------------------------------------------------------------
 -- Re-init correct form if navigation buttons are pressed
@@ -481,6 +465,7 @@ local function loop()
 		else
 		telemVal2 = "-"
 	end
+    collectgarbage()
 end
 ----------------------------------------------------------------------
 -- Application initialization
@@ -526,8 +511,10 @@ local function init()
 	system.registerTelemetry(2,label2,2,printTelemetry2)
 	system.registerControl(1,trans2.control1,trans2.cl1)
 	system.registerControl(2,trans2.control2,trans2.cl2)
+    collectgarbage()
 end
 ----------------------------------------------------------------------
-percVersion = "v.2.3"
+percVersion = "v.2.4"
 setLanguage()
+collectgarbage()
 return {init=init, loop=loop, author="RC-Thoughts", version="2.1", name=trans2.appName} 
