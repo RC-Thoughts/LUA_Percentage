@@ -29,7 +29,7 @@ local altList = {}
 -- Read translations
 local function setLanguage()
     local lng=system.getLocale()
-    local file = io.readall("Apps/Lang/RCT-Perc.jsn")
+    local file = io.readall("Apps/Lang/RCT-Per2.jsn")
     local obj = json.decode(file)
     if(obj) then
         trans2 = obj[lng] or obj[obj.default]
